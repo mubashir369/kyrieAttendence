@@ -1,12 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import EmployeeTable from "@/components/admin/EmployeeTable";
+import EmployeeChart from "@/components/admin/EmployeeChart";
 
-// Dummy data for tables (replace with real DB queries)
-const presentEmployees = [
-  { name: "John Doe", email: "john@example.com", department: "IT" },
-  { name: "Jane Smith", email: "jane@example.com", department: "HR" },
-];
+// Dummy data (replace with DB queries later)
 const sickEmployees = [
   { name: "Bob Brown", email: "bob@example.com", department: "Finance" },
 ];
@@ -25,7 +22,7 @@ export default async function AdminDashboard() {
     totalHR: 5,
     leavesToday: leaveEmployees.length,
     sickEmployees: sickEmployees.length,
-    presentEmployees: presentEmployees.length,
+    presentEmployees: 120 - leaveEmployees.length - sickEmployees.length,
   };
 
   const cards = [
@@ -36,9 +33,15 @@ export default async function AdminDashboard() {
     { title: "Present Employees", value: stats.presentEmployees, color: "bg-purple-500" },
   ];
 
+  const chartData = [
+    { name: "Present", value: stats.presentEmployees },
+    { name: "On Leave", value: stats.leavesToday },
+    { name: "Sick", value: stats.sickEmployees },
+  ];
+
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-900">Admin Dashboard</h1>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
@@ -53,10 +56,26 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      {/* Employee Tables */}
-      <EmployeeTable title="Present Employees" employees={presentEmployees} color="bg-purple-500" />
-      <EmployeeTable title="Sick Employees" employees={sickEmployees} color="bg-red-500" />
-      <EmployeeTable title="On Leave Today" employees={leaveEmployees} color="bg-yellow-500" />
+      {/* Chart + Tables */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-lg shadow-md p-4">
+          <EmployeeChart data={chartData} />
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-4">
+          <EmployeeTable
+            title="Sick Employees"
+            employees={sickEmployees}
+            color="bg-red-500"
+          />
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-4">
+          <EmployeeTable
+            title="On Leave Today"
+            employees={leaveEmployees}
+            color="bg-yellow-500"
+          />
+        </div>
+      </div>
     </div>
   );
 }

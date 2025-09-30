@@ -1,43 +1,63 @@
-"use client";
-
 interface Employee {
   name: string;
   email: string;
-  department?: string;
+  department: string;
 }
 
-interface EmployeeTableProps {
+interface Props {
   title: string;
   employees: Employee[];
-  color: string; // Tailwind bg color for table header
+  color: string;
 }
 
-export default function EmployeeTable({ title, employees, color }: EmployeeTableProps) {
+export default function EmployeeTable({ title, employees, color }: Props) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-x-auto mb-6">
-      <div className={`p-4 font-bold text-white ${color} rounded-t-lg`}>
-        {title} ({employees.length})
-      </div>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {employees.map((emp, index) => (
-            <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{emp.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{emp.email}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{emp.department || "-"}</td>
+    <div>
+      <h2
+        className={`${color} text-white px-4 py-2 rounded-t-lg font-semibold text-lg`}
+      >
+        {title}
+      </h2>
+      <div className="overflow-x-auto">
+        <table className="w-full border border-gray-200 text-left rounded-b-lg">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 text-sm font-semibold text-gray-900">
+                Name
+              </th>
+              <th className="px-4 py-2 text-sm font-semibold text-gray-900">
+                Email
+              </th>
+              <th className="px-4 py-2 text-sm font-semibold text-gray-900">
+                Department
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {employees.length > 0 ? (
+              employees.map((emp, i) => (
+                <tr
+                  key={i}
+                  className="border-t hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-4 py-2 text-gray-800">{emp.name}</td>
+                  <td className="px-4 py-2 text-gray-800">{emp.email}</td>
+                  <td className="px-4 py-2 text-gray-800">{emp.department}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={3}
+                  className="px-4 py-4 text-center text-gray-500 italic"
+                >
+                  No employees found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
