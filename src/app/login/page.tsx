@@ -1,13 +1,23 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      if (session.user.role === "admin") router.push("/dashboard");
+      else if (session.user.role === "hr") router.push("/hr/dashboard");
+      else router.push("/employee/dashboard");
+    }
+  }, [status, session, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +39,12 @@ export default function LoginPage() {
     }
   };
 
+  // Show nothing while checking session
+  if (status === "loading") {
+    return <div className="flex items-center justify-center h-screen text-white">Checking session...</div>;
+  }
+
+  // Only show login form if NOT authenticated
   return (
     <div className="flex h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
       <form

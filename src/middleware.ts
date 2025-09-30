@@ -2,10 +2,10 @@ import { withAuth } from "next-auth/middleware";
 
 export default withAuth({
   callbacks: {
-    authorized: ({ token }) => !!token, // only allow if user is logged in
+    authorized: ({ token }) => !!token, 
   },
   pages: {
-    signIn: "/login", // redirect here if not logged in
+    signIn: "/login", 
   },
 });
 

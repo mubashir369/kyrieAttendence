@@ -11,7 +11,7 @@ export default function Sidebar({ children }: SidebarProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const links = [
-    { name: "Dashboard", href: "/admin/dashboard" },
+    { name: "Dashboard", href: "/dashboard" },
     { name: "Employees", href: "/admin/employees" },
     { name: "Leave Requests", href: "/admin/leave-requests" },
     { name: "Reports", href: "/admin/reports" },
