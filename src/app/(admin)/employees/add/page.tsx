@@ -36,7 +36,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   }
 
   // Send POST request to API
-  const res = await fetch("/api/admin/add-employee", {
+  const res = await fetch("/api/admin/employees/add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),

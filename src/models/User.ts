@@ -3,9 +3,10 @@ import { Schema, model, models } from "mongoose";
 const UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
-  designation:{ type: String, required: true },
+
   password: { type: String, required: true },
   role: { type: String, enum: ["admin", "hr", "employee"], default: "employee" },
+  status:{ type: String },
 
  
   salary: { type: Number, default: 0 }, 
@@ -15,6 +16,7 @@ const UserSchema = new Schema({
  
   workingHoursPerDay: { type: Number, default: 8 },
   workingDaysPerMonth: { type: Number, default: 26 }, 
+  department:{ type: String },
 });
 
 export default models.User || model("User", UserSchema);

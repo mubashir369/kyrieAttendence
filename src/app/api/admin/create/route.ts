@@ -28,12 +28,14 @@ export async function POST(req: Request) {
       name,
       email,
       password: hashedPassword,
-      role, // "admin", "hr", or "employee"
+      role, 
       salary: 0,
       salaryType: "fixed",
+      status:"active",
       leaveSalary: 0,
       workingHoursPerDay: 8,
       workingDaysPerMonth: 26,
+      department:""
     });
 
     return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
