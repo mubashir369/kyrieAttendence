@@ -19,11 +19,13 @@ export default function DeleteEmployeeModal({ employee, onClose, onDelete }: Pro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
+      <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg p-6 w-96 shadow-2xl relative">
         <h2 className="text-xl font-bold mb-4">Delete Employee</h2>
-        <p>Are you sure you want to delete {employee.name}?</p>
-        <div className="flex justify-end space-x-2 mt-4">
+        <p className="mb-4">
+          Are you sure you want to delete <span className="font-semibold">{employee.name}</span>?
+        </p>
+        <div className="flex justify-end space-x-2">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded"

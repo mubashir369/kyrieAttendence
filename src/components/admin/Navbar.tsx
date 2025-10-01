@@ -52,7 +52,7 @@ export default function AdminNavbar() {
               {isEmployeeOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
                   <Link
-                    href="/admin/employees"
+                    href="/employees"
                     className="block px-4 py-2 text-sm hover:bg-gray-200"
                     onClick={() => setIsEmployeeOpen(false)}
                   >
@@ -85,21 +85,21 @@ export default function AdminNavbar() {
               {isReportsOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white text-black rounded-md shadow-lg z-50">
                   <Link
-                    href="/admin/reports/today"
+                    href="/reports/today"
                     className="block px-4 py-2 text-sm hover:bg-gray-200"
                     onClick={() => setIsReportsOpen(false)}
                   >
                     Today Report
                   </Link>
                   <Link
-                    href="/admin/reports/monthly"
+                    href="/reports/monthly"
                     className="block px-4 py-2 text-sm hover:bg-gray-200"
                     onClick={() => setIsReportsOpen(false)}
                   >
                     Monthly Report
                   </Link>
                   <Link
-                    href="/admin/reports/period"
+                    href="/reports/period"
                     className="block px-4 py-2 text-sm hover:bg-gray-200"
                     onClick={() => setIsReportsOpen(false)}
                   >

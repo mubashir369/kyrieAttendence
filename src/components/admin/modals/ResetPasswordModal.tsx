@@ -31,19 +31,19 @@ export default function ResetPasswordModal({ employee, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md">
+      <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg p-6 w-96 shadow-2xl relative">
         <h2 className="text-xl font-bold mb-4">Reset Password</h2>
         <input
           type="password"
-          className="w-full p-2 mb-3 border rounded"
+          className="w-full p-2 mb-3 border rounded dark:bg-gray-700 dark:border-gray-600"
           placeholder="New Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="password"
-          className="w-full p-2 mb-3 border rounded"
+          className="w-full p-2 mb-3 border rounded dark:bg-gray-700 dark:border-gray-600"
           placeholder="Confirm Password"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
