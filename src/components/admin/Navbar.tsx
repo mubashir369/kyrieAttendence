@@ -4,11 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
+import MarkAttendanceModal from "./modals/MarkAttendanceModal";
 
 export default function AdminNavbar() {
   const pathname = usePathname();
   const [isEmployeeOpen, setIsEmployeeOpen] = useState(false);
   const [isReportsOpen, setIsReportsOpen] = useState(false);
+  const [isAttendanceOpen, setIsAttendanceOpen] = useState(false);
 
   const navLinks = [
     { name: "Dashboard", href: "/dashboard" },
@@ -36,7 +38,9 @@ export default function AdminNavbar() {
               </Link>
             ))}
 
-            {/* Employees Dropdown */}
+      
+          
+        
             <div className="relative">
               <button
                 onClick={() => {
@@ -112,13 +116,25 @@ export default function AdminNavbar() {
             {/* Logout */}
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+              className="bg-red-500 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
             >
               Logout
             </button>
+
+         <button
+              onClick={() => setIsAttendanceOpen(true)}
+              className="px-4 py-2 rounded-md text-sm font-medium bg-green-500 hover:bg-green-600 animate-pulse shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              Mark Attendance
+            </button>
+
           </div>
         </div>
       </div>
+         {/* Attendance Modal */}
+      {isAttendanceOpen && (
+        <MarkAttendanceModal onClose={() => setIsAttendanceOpen(false)} />
+      )}
     </nav>
   );
 }
