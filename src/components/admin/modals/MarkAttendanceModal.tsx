@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
+import branches from "@/data/branches.json";
 
 interface Employee {
   _id: string;
   name: string;
+  defaultBranch?: string; // optional default branch
 }
 
 interface Props {
@@ -27,7 +29,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
   const [outTime, setOutTime] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const PLACE_OPTIONS = ["VSM", "OTP", "EDP", "VSG", "VSK", "OTHER"];
+  const PLACE_OPTIONS = [...branches, "OTHER"];
 
   useEffect(() => {
     async function fetchEmployees() {
@@ -41,6 +43,25 @@ export default function MarkAttendanceModal({ onClose }: Props) {
     }
     fetchEmployees();
   }, []);
+
+  const handleEmployeeChange = (id: string) => {
+    setEmployeeId(id);
+    const selectedEmployee = employees.find((emp) => emp._id === id);
+    if (selectedEmployee?.defaultBranch) {
+      setPlace([selectedEmployee.defaultBranch]); // set default branch
+    } else {
+      setPlace([]);
+    }
+    setCustomPlace(""); // clear custom place
+  };
+
+  const handleStatusChange = (value: "present" | "absent") => {
+    setStatus(value);
+    if (value === "absent") {
+      setPlace([]);
+      setCustomPlace("");
+    }
+  };
 
   const togglePlace = (p: string) => {
     if (place.includes(p)) {
@@ -99,7 +120,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
         {/* Employee */}
         <select
           value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value)}
+          onChange={(e) => handleEmployeeChange(e.target.value)}
           className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
         >
           <option value="">Select Employee</option>
@@ -113,7 +134,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
         {/* Status */}
         <select
           value={status}
-          onChange={(e) => setStatus(e.target.value as "present" | "absent")}
+          onChange={(e) => handleStatusChange(e.target.value as "present" | "absent")}
           className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
         >
           <option value="present">Present</option>

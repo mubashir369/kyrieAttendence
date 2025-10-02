@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import branches from "@/data/branches.json";
 
 export default function AddEmployeePage() {
   const router = useRouter();
@@ -120,13 +121,13 @@ export default function AddEmployeePage() {
               name="defaultBranch"
               value={formData.defaultBranch}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-3 border text-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              <option value="VSM">VSM</option>
-              <option value="OTP">OTP</option>
-              <option value="EDP">EDP</option>
-              <option value="VSG">VSG</option>
-              <option value="VSK">VSK</option>
+              {branches.map((branch) => (
+    <option key={branch} value={branch}>
+      {branch}
+    </option>
+  ))}
             </select>
           </div>
 

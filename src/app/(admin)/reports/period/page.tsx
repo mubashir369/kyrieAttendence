@@ -1,6 +1,4 @@
-// File: src/app/admin/reports/AttendanceReport.tsx
 "use client";
-
 import { useEffect, useState } from "react";
 
 interface Employee {
@@ -17,7 +15,7 @@ interface AttendanceRecord {
   inTime?: string;
   outTime?: string;
   status: "present" | "absent";
-  place: string[]; // updated to array
+  place: string[];
 }
 
 export default function AttendanceReport() {
@@ -36,11 +34,8 @@ export default function AttendanceReport() {
     try {
       let url = `/api/admin/attendance/reports?type=${reportType}`;
 
-      if (reportType === "monthly") {
-        url += `&month=${month}&year=${year}`;
-      } else if (reportType === "period") {
-        url += `&from=${from}&to=${to}`;
-      }
+      if (reportType === "monthly") url += `&month=${month}&year=${year}`;
+      if (reportType === "period") url += `&from=${from}&to=${to}`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -59,6 +54,28 @@ export default function AttendanceReport() {
   useEffect(() => {
     fetchReport();
   }, [reportType, month, year, from, to]);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this attendance?")) return;
+
+    try {
+      const res = await fetch(`/api/admin/attendance/delete?id=${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message);
+        setRecords(records.filter((r) => r._id !== id));
+      } else {
+        alert(data.message || "Failed to delete attendance");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete attendance");
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -85,14 +102,12 @@ export default function AttendanceReport() {
               min={1}
               max={12}
               className="border p-2 rounded w-20 text-gray-800"
-              placeholder="Month"
             />
             <input
               type="number"
               value={year}
               onChange={(e) => setYear(Number(e.target.value))}
               className="border p-2 rounded w-24 text-gray-800"
-              placeholder="Year"
             />
           </>
         )}
@@ -141,6 +156,7 @@ export default function AttendanceReport() {
                 <th className="px-6 py-3 text-left text-sm font-semibold">In</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">Out</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">Place</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold">Action</th>
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
@@ -153,7 +169,15 @@ export default function AttendanceReport() {
                   <td className="px-6 py-4">{new Date(r.date).toLocaleDateString()}</td>
                   <td className="px-6 py-4">{r.inTime || "-"}</td>
                   <td className="px-6 py-4">{r.outTime || "-"}</td>
-                 <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
+                  <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleDelete(r._id)}
+                      className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
