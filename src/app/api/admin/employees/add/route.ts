@@ -8,12 +8,26 @@ export async function POST(req: NextRequest) {
     await connectDB();
     const data = await req.json();
 
-    const { name, email, password, role, salary, salaryType, leaveSalary, workingHoursPerDay, workingDaysPerMonth,department } = data;
-    console.log(department,"department");
-    
+    const {
+      name,
+      email,
+      phone,
+      password,
+      role,
+      salary,
+      salaryType,
+      leaveSalary,
+      workingHoursPerDay,
+      workingDaysPerMonth,
+      department,
+      defaultBranch,
+    } = data;
 
     if (!name || !email || !password) {
-      return NextResponse.json({ message: "Name, email and password are required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Name, email, and password are required" },
+        { status: 400 }
+      );
     }
 
     const existingUser = await User.findOne({ email });
@@ -26,15 +40,17 @@ export async function POST(req: NextRequest) {
     const newUser = new User({
       name,
       email,
+      phone,
       password: hashedPassword,
       role,
       salary,
       salaryType,
-      status:"active",
+      status: "active",
       leaveSalary,
       workingHoursPerDay,
       workingDaysPerMonth,
-      department
+      department,
+      defaultBranch,
     });
 
     await newUser.save();

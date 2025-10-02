@@ -1,3 +1,4 @@
+// File: src/app/admin/reports/AttendanceReport.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,7 +17,7 @@ interface AttendanceRecord {
   inTime?: string;
   outTime?: string;
   status: "present" | "absent";
-  place: string;
+  place: string[]; // updated to array
 }
 
 export default function AttendanceReport() {
@@ -64,7 +65,7 @@ export default function AttendanceReport() {
       <h1 className="text-3xl font-bold mb-4 text-gray-900">Attendance Report</h1>
 
       {/* Filters */}
-      <div className="flex gap-4 mb-4 items-center">
+      <div className="flex gap-4 mb-4 items-center flex-wrap">
         <select
           value={reportType}
           onChange={(e) => setReportType(e.target.value as any)}
@@ -115,7 +116,7 @@ export default function AttendanceReport() {
       </div>
 
       {/* Summary */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 mb-4 flex-wrap">
         <div className="p-4 bg-gray-100 rounded shadow text-gray-900 font-semibold">
           Total Employees: {totalEmployees}
         </div>
@@ -150,9 +151,9 @@ export default function AttendanceReport() {
                   <td className="px-6 py-4">{r.employeeId.role}</td>
                   <td className="px-6 py-4">{r.status}</td>
                   <td className="px-6 py-4">{new Date(r.date).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">{r.inTime ? r.inTime : "-"}</td>
-                  <td className="px-6 py-4">{r.outTime ? r.outTime : "-"}</td>
-                  <td className="px-6 py-4">{r.place}</td>
+                  <td className="px-6 py-4">{r.inTime || "-"}</td>
+                  <td className="px-6 py-4">{r.outTime || "-"}</td>
+                 <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
                 </tr>
               ))}
             </tbody>

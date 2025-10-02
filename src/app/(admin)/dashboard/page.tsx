@@ -1,42 +1,29 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getDashboardData } from "@/lib/dashboard";
 import EmployeeTable from "@/components/admin/EmployeeTable";
 import EmployeeChart from "@/components/admin/EmployeeChart";
 
-// Dummy data (replace with DB queries later)
-const sickEmployees = [
-  { name: "Bob Brown", email: "bob@example.com", department: "Finance" },
-];
-const leaveEmployees = [
-  { name: "Alice Green", email: "alice@example.com", department: "Marketing" },
-];
-
 export default async function AdminDashboard() {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user.role !== "admin") {
-    return <h1 className="text-red-500 text-center mt-20">Access Denied</h1>;
-  }
 
-  const stats = {
-    totalEmployees: 120,
-    totalHR: 5,
-    leavesToday: leaveEmployees.length,
-    sickEmployees: sickEmployees.length,
-    presentEmployees: 120 - leaveEmployees.length - sickEmployees.length,
-  };
+  const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, "0");
+const dd = String(today.getDate()).padStart(2, "0");
+const todayStr = `${yyyy}-${mm}-${dd}`;
+  
+  const { stats, unMarkedEmployees, leaveEmployees } = await getDashboardData(todayStr);
 
   const cards = [
     { title: "Total Employees", value: stats.totalEmployees, color: "bg-blue-500" },
     { title: "Total HR", value: stats.totalHR, color: "bg-green-500" },
     { title: "Leaves Today", value: stats.leavesToday, color: "bg-yellow-500" },
-    { title: "Sick Employees", value: stats.sickEmployees, color: "bg-red-500" },
+    { title: "Unmarked Employees", value: stats.unMarked, color: "bg-red-500" },
     { title: "Present Employees", value: stats.presentEmployees, color: "bg-purple-500" },
   ];
 
   const chartData = [
     { name: "Present", value: stats.presentEmployees },
     { name: "On Leave", value: stats.leavesToday },
-    { name: "Sick", value: stats.sickEmployees },
+    { name: "Unmarked", value: stats.unMarked },
   ];
 
   return (
@@ -58,24 +45,28 @@ export default async function AdminDashboard() {
 
       {/* Chart + Tables */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <EmployeeChart data={chartData} />
-        </div>
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <EmployeeTable
-            title="Sick Employees"
-            employees={sickEmployees}
-            color="bg-red-500"
-          />
-        </div>
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <EmployeeTable
-            title="On Leave Today"
-            employees={leaveEmployees}
-            color="bg-yellow-500"
-          />
-        </div>
-      </div>
+  <div className="bg-white rounded-lg shadow-md p-4">
+    <EmployeeChart data={chartData} />
+  </div>
+
+  {/* Unmarked Employees Table with scroll */}
+  <div className="bg-white rounded-lg shadow-md p-4 max-h-[480px] overflow-y-auto">
+    <EmployeeTable
+      title="Unmarked Employees"
+      employees={unMarkedEmployees}
+      color="bg-red-500"
+    />
+  </div>
+
+  {/* On Leave Today Table with scroll */}
+  <div className="bg-white rounded-lg shadow-md p-4 max-h-[480px] overflow-y-auto">
+    <EmployeeTable
+      title="On Leave Today"
+      employees={leaveEmployees}
+      color="bg-yellow-500"
+    />
+  </div>
+</div>
     </div>
   );
 }
