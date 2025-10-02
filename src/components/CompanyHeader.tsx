@@ -23,7 +23,7 @@ export default function CompanyHeader() {
               🌐
             </span>
             <span className="group-hover:text-yellow-300 transition-colors duration-300">
-              eliyabyte.com
+              eliabyte.com
             </span>
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-300 transition-all duration-300 group-hover:w-full"></span>
           </a>
@@ -36,7 +36,7 @@ export default function CompanyHeader() {
               📧
             </span>
             <span className="group-hover:text-green-300 transition-colors duration-300">
-              eliyabyte.sales@gmail.com
+              eliabyte.sales@gmail.com
             </span>
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-300 transition-all duration-300 group-hover:w-full"></span>
           </a>

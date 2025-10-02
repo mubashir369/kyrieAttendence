@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
-import MarkAttendanceModal from "./modals/MarkAttendanceModal";
+
 import PremiumOptionsModal from "../modals/PremiumOptionsModal";
 import { Crown } from "lucide-react";
+import MarkAttendanceModal from "../admin/modals/MarkAttendanceModal";
 
 interface NavLink {
   name: string;
@@ -15,17 +16,15 @@ interface NavLink {
   submenu?: NavLink[];
 }
 
-export default function AdminNavbar() {
-  
+export default function HrNavbar() {
   const pathname = usePathname();
-  
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isAttendanceOpen, setIsAttendanceOpen] = useState(false);
   const [isPremiumOpen, setIsPremiumOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
  const navLinks: NavLink[] = [
-  { name: "Dashboard", href: "/dashboard", premium: false, submenu: [] },
+  { name: "Dashboard", href: "/hr/dashboard", premium: false, submenu: [] },
   {
     name: "Leave Requests",
     href: "#",
@@ -63,8 +62,8 @@ export default function AdminNavbar() {
     href: "#",
     premium: false,
     submenu: [
-      { name: "Employee List", href: "/employees" },
-      { name: "Add Employee", href: "/employees/add" },
+      { name: "Employee List", href: "/hr/employees" },
+      { name: "Add Employee", href: "/hr/employees/add" },
     ],
   },
   {
@@ -74,21 +73,15 @@ export default function AdminNavbar() {
     submenu: [
       { name: "Today Report", href: "/reports/today", premium: true },
       { name: "Monthly Report", href: "/reports/monthly", premium: true },
-      { name: "Period Wise Report", href: "/reports/period" },
+      { name: "Period Wise Report", href: "/hr/reports/period" },
     ],
   },
 ];
 
-  const { data: session } = useSession();
-  const isadmin = session?.user?.role === "admin";
-  const ishr = session?.user?.role === "hr";
-  const isemployee = session?.user?.role === "employee";
-
 
 
   useEffect(() => {
-    if(isadmin){
-  function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setActiveDropdown(null);
       }
@@ -97,20 +90,6 @@ export default function AdminNavbar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-    }else{
-      if(ishr){
-        redirect("/hr/dashboard");
-      }else if(isemployee){
-        redirect("/emp/dashboard");
-      }else{
- redirect("/login");
-      }
-    }
-   
-    
-
-    
-    
   }, []);
 
   const handleDropdown = (name: string) => {
