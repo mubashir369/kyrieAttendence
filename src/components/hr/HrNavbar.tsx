@@ -73,6 +73,7 @@ export default function HrNavbar() {
     submenu: [
       { name: "Today Report", href: "/reports/today", premium: true },
       { name: "Monthly Report", href: "/reports/monthly", premium: true },
+      { name: "Monthly Monitor", href: "/hr/reports/employee-monthly-report" },
       { name: "Period Wise Report", href: "/hr/reports/period" },
     ],
   },
