@@ -20,6 +20,7 @@ export default function AddEmployeePage() {
     salary: 0,
     salaryType: "fixed",
     leaveSalary: 0,
+    employeeId:"",
     workingHoursPerDay: 8,
     workingDaysPerMonth: 26,
     
@@ -78,6 +79,7 @@ export default function AddEmployeePage() {
         salary: 0,
         salaryType: "fixed",
         leaveSalary: 0,
+        employeeId:"",
         workingHoursPerDay: 8,
         workingDaysPerMonth: 26,
       
@@ -96,108 +98,119 @@ export default function AddEmployeePage() {
         onSubmit={handleSubmit}
         className="space-y-8"
       >
-        {/* Normal Fields */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
-          <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
+      
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
+  <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1 font-medium">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Phone</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Department</label>
-              <input
-                type="text"
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Default Branch</label>
-              <select
-                name="defaultBranch"
-                value={formData.defaultBranch}
-                onChange={handleChange}
-                className="w-full p-3 border text-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                {branches.map((branch) => (
-                  <option key={branch} value={branch}>
-                    {branch}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Role</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="employee">Employee</option>
-                <option value="hr">HR</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-          </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {/* Employee ID */}
+    <div>
+      <label className="block mb-1 font-medium">Employee ID</label>
+      <input
+        type="text"
+        name="employeeId"
+        value={formData.employeeId}
+        onChange={handleChange}
+        required
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1 font-medium">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Confirm Password</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-          </div>
-        </div>
+    {/* Name */}
+    <div>
+      <label className="block mb-1 font-medium">Name</label>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+
+    {/* Email */}
+    <div>
+      <label className="block mb-1 font-medium">Email</label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+
+    {/* Phone */}
+    <div>
+      <label className="block mb-1 font-medium">Phone</label>
+      <input
+        type="text"
+        name="phone"
+        value={formData.phone}
+        onChange={handleChange}
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+
+    {/* Department */}
+    <div>
+      <label className="block mb-1 font-medium">Department</label>
+      <input
+        type="text"
+        name="department"
+        value={formData.department}
+        onChange={handleChange}
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+
+    {/* Default Branch */}
+    <div>
+      <label className="block mb-1 font-medium">Default Branch</label>
+      <select
+        name="defaultBranch"
+        value={formData.defaultBranch}
+        onChange={handleChange}
+        className="w-full p-3 border text-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        {branches.map((branch) => (
+          <option key={branch} value={branch}>
+            {branch}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  {/* Password Fields */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label className="block mb-1 font-medium">Password</label>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+    <div>
+      <label className="block mb-1 font-medium">Confirm Password</label>
+      <input
+        type="password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+  </div>
+</div>
+
 
         {/* Premium Fields */}
      <div className="bg-yellow-100 border-2 border-yellow-400 p-6 rounded-xl shadow-md space-y-6">

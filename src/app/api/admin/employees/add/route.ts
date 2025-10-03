@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
       workingHoursPerDay,
       workingDaysPerMonth,
       department,
+      employeeId,
       defaultBranch,
     } = data;
 
@@ -47,6 +48,7 @@ export async function POST(req: NextRequest) {
       salaryType,
       status: "active",
       leaveSalary,
+      employeeId,
       workingHoursPerDay,
       workingDaysPerMonth,
       department,
