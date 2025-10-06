@@ -5,7 +5,7 @@ import branches from "@/data/branches.json";
 interface Employee {
   _id: string;
   name: string;
-  defaultBranch?: string; // optional default branch
+  defaultBranch?: string; 
 }
 
 interface Props {
@@ -48,11 +48,11 @@ export default function MarkAttendanceModal({ onClose }: Props) {
     setEmployeeId(id);
     const selectedEmployee = employees.find((emp) => emp._id === id);
     if (selectedEmployee?.defaultBranch) {
-      setPlace([selectedEmployee.defaultBranch]); // set default branch
+      setPlace([selectedEmployee.defaultBranch]); 
     } else {
       setPlace([]);
     }
-    setCustomPlace(""); // clear custom place
+    setCustomPlace(""); 
   };
 
   const handleStatusChange = (value: "present" | "absent") => {
@@ -109,7 +109,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
       <div className="bg-gray-50 text-gray-900 rounded-lg p-6 w-96 shadow-2xl relative">
         <h2 className="text-xl font-bold mb-4">Mark Attendance</h2>
 
-        {/* Date */}
+    
         <input
           type="date"
           className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
@@ -117,7 +117,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
           onChange={(e) => setDate(e.target.value)}
         />
 
-        {/* Employee */}
+
         <select
           value={employeeId}
           onChange={(e) => handleEmployeeChange(e.target.value)}
@@ -131,7 +131,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
           ))}
         </select>
 
-        {/* Status */}
+   
         <select
           value={status}
           onChange={(e) => handleStatusChange(e.target.value as "present" | "absent")}
@@ -139,9 +139,10 @@ export default function MarkAttendanceModal({ onClose }: Props) {
         >
           <option value="present">Present</option>
           <option value="absent">Absent</option>
+          <option value="weeklyOff">Weekly Off</option>
         </select>
 
-        {/* Place selection only if present */}
+    
         {status === "present" && (
           <>
             <div className="mb-3">
@@ -161,7 +162,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
               </div>
             </div>
 
-            {/* Custom Place */}
+  
             {place.includes("OTHER") && (
               <input
                 type="text"
@@ -172,7 +173,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
               />
             )}
 
-            {/* In / Out Times */}
+           
             <input
               type="time"
               value={inTime}

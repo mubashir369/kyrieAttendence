@@ -14,7 +14,7 @@ interface AttendanceRecord {
   date: string;
   inTime?: string;
   outTime?: string;
-  status: "present" | "absent";
+  status: "present" | "absent" | "weeklyOff";
   place: string[];
 }
 
@@ -55,27 +55,27 @@ export default function AttendanceReport() {
     fetchReport();
   }, [reportType, month, year, from, to]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this attendance?")) return;
+  // const handleDelete = async (id: string) => {
+  //   if (!confirm("Are you sure you want to delete this attendance?")) return;
 
-    try {
-      const res = await fetch(`/api/admin/attendance/delete?id=${id}`, {
-        method: "DELETE",
-      });
+  //   try {
+  //     const res = await fetch(`/api/admin/attendance/delete?id=${id}`, {
+  //       method: "DELETE",
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (res.ok) {
-        alert(data.message);
-        setRecords(records.filter((r) => r._id !== id));
-      } else {
-        alert(data.message || "Failed to delete attendance");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete attendance");
-    }
-  };
+  //     if (res.ok) {
+  //       alert(data.message);
+  //       setRecords(records.filter((r) => r._id !== id));
+  //     } else {
+  //       alert(data.message || "Failed to delete attendance");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to delete attendance");
+  //   }
+  // };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -171,12 +171,12 @@ export default function AttendanceReport() {
                   <td className="px-6 py-4">{r.outTime || "-"}</td>
                   <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
                   <td className="px-6 py-4">
-                    <button
+                    {/* <button
                       onClick={() => handleDelete(r._id)}
                       className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

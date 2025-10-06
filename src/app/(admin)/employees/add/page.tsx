@@ -86,7 +86,7 @@ export default function AddEmployeePage() {
           />
         </div>
 
-        {/* Row: Email + Phone */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Email</label>

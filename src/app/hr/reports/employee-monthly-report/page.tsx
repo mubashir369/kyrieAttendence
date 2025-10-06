@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 type AttendanceStatus = "present" | "absent" | "notMarked" | "weeklyOff";
@@ -8,27 +8,44 @@ type AttendanceStatus = "present" | "absent" | "notMarked" | "weeklyOff";
 interface AttendanceData {
   [date: string]: AttendanceStatus;
 }
+interface Employee {
+  _id: string;
+  name: string;
+  defaultBranch?: string; 
+  employeeId:string;
+}
 
 
-const dummyAttendance: AttendanceData = {
-  "2025-10-01": "present",
-  "2025-10-02": "absent",
-  "2025-10-05": "weeklyOff",
-  "2025-10-07": "notMarked",
-  "2025-10-10": "present",
-  "2025-10-12": "absent",
-};
 
 export default function EmployeeMonthlyReportPage() {
   const [employee, setEmployee] = useState("");
+   const [employees, setEmployees] = useState<Employee[]>([]);
   const [month, setMonth] = useState(dayjs().format("YYYY-MM"));
   const [attendance, setAttendance] = useState<AttendanceData | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setAttendance(dummyAttendance); 
-  };
-
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(`/api/attendance/${employee}/${month}`);
+    if (!res.ok) throw new Error("Failed to fetch attendance");
+    const data = await res.json();
+    setAttendance(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+  useEffect(() => {
+    async function fetchEmployees() {
+      try {
+        const res = await fetch("/api/admin/employees");
+        const data = await res.json();
+        setEmployees(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchEmployees();
+  }, []);
   return (
     <div className="p-6 max-w-6xl mx-auto">
 
@@ -49,8 +66,11 @@ export default function EmployeeMonthlyReportPage() {
           required
         >
           <option value="">Select Employee</option>
-          <option value="EMP001">EMP001 - John Doe</option>
-          <option value="EMP002">EMP002 - Jane Smith</option>
+          {employees.map((emp) => (
+            <option key={emp._id} value={emp._id}>
+             {emp.employeeId} - {emp.name}
+            </option>
+          ))}
         </select>
 
     

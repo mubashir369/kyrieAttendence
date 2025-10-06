@@ -14,8 +14,8 @@ const attendanceSchema = new Schema({
   date: { type: Date, required: true },
   inTime: { type: Date },
   outTime: { type: Date },
-  status: { type: String, enum: ["present", "absent"], required: true },
-  place: { type: [String], default: [] }, // array of strings
+  status: { type: String, enum: ["present", "absent","weeklyOff"], required: true },
+  place: { type: [String], default: [] },
 }, { timestamps: true });
 
 const Attendance = models.Attendance || model<AttendanceDoc>("Attendance", attendanceSchema);
