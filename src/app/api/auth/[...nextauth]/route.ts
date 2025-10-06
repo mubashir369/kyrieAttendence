@@ -32,22 +32,26 @@ export const authOptions: AuthOptions = {
   },
 
   session: {
-    strategy: "jwt" as const, // ✅ Use 'as const' to satisfy TypeScript
+    strategy: "jwt" as const, 
   },
 
   callbacks: {
   async jwt({ token, user }) {
     if (user) {
-      // token.role can be unknown, so cast safely
+  
       token.role = (user as any).role as "admin" | "hr" | "employee";
+
+      token.id=user.id
     }
     return token;
   },
 
   async session({ session, token }) {
     if (token?.role) {
-      // Cast unknown type to allowed roles
+   
       session.user.role = token.role as "admin" | "hr" | "employee";
+     
+      session.id = token.id as string;
     }
     return session;
   },

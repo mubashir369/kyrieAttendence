@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import branches from "@/data/branches.json";
+import { useSession } from "next-auth/react";
 
 interface Employee {
   _id: string;
@@ -30,9 +31,14 @@ export default function MarkAttendanceModal({ onClose }: Props) {
   const [loading, setLoading] = useState(false);
 
   const PLACE_OPTIONS = [...branches, "OTHER"];
-
+  const { data: session } = useSession();
+    const isemployee = session?.user?.role === "employee";
   useEffect(() => {
-    async function fetchEmployees() {
+    if(isemployee){
+      setEmployeeId(session?.id ?? "")
+
+    }else{
+       async function fetchEmployees() {
       try {
         const res = await fetch("/api/admin/employees");
         const data = await res.json();
@@ -42,8 +48,12 @@ export default function MarkAttendanceModal({ onClose }: Props) {
       }
     }
     fetchEmployees();
-  }, []);
 
+    }
+
+   
+  }, []);
+ 
   const handleEmployeeChange = (id: string) => {
     setEmployeeId(id);
     const selectedEmployee = employees.find((emp) => emp._id === id);
@@ -72,7 +82,13 @@ export default function MarkAttendanceModal({ onClose }: Props) {
   };
 
   const handleSubmit = async () => {
-    if (!employeeId || !date) return alert("Please fill all required fields");
+
+    if(!isemployee){
+ if (!employeeId || !date) return alert("Please fill all required fields");
+    }
+
+
+   
 
     let finalPlaces = [...place];
     if (place.includes("OTHER") && customPlace) {
@@ -107,6 +123,7 @@ export default function MarkAttendanceModal({ onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
       <div className="bg-gray-50 text-gray-900 rounded-lg p-6 w-96 shadow-2xl relative">
+         <h4 className="text-md font-bold mb-4">hi {session?.user?.name}</h4>
         <h2 className="text-xl font-bold mb-4">Mark Attendance</h2>
 
     
@@ -117,8 +134,9 @@ export default function MarkAttendanceModal({ onClose }: Props) {
           onChange={(e) => setDate(e.target.value)}
         />
 
-
-        <select
+{
+  !isemployee&&<select
+       
           value={employeeId}
           onChange={(e) => handleEmployeeChange(e.target.value)}
           className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
@@ -130,6 +148,8 @@ export default function MarkAttendanceModal({ onClose }: Props) {
             </option>
           ))}
         </select>
+}
+        
 
    
         <select
@@ -172,9 +192,9 @@ export default function MarkAttendanceModal({ onClose }: Props) {
                 className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
               />
             )}
-
-           
-            <input
+            {
+              !isemployee&&<>
+                <input
               type="time"
               value={inTime}
               onChange={(e) => setInTime(e.target.value)}
@@ -186,6 +206,11 @@ export default function MarkAttendanceModal({ onClose }: Props) {
               onChange={(e) => setOutTime(e.target.value)}
               className="w-full p-2 mb-3 border rounded bg-white border-gray-300"
             />
+              </>
+            }
+
+           
+          
           </>
         )}
 

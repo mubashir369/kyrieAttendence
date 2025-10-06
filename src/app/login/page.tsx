@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  // Redirect if already logged in
+
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
       if (session.user.role === "admin") router.push("/dashboard");

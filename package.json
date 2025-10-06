@@ -12,6 +12,7 @@
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "dayjs": "^1.11.18",
+    "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
     "mongoose": "^8.18.2",
     "next": "15.5.4",

@@ -35,7 +35,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/login", // Always redirect to login page
+    signIn: "/login", 
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
