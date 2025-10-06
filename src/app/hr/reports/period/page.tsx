@@ -6,6 +6,7 @@ interface Employee {
   name: string;
   email: string;
   role: string;
+  department:string
 }
 
 interface AttendanceRecord {
@@ -54,28 +55,6 @@ export default function AttendanceReport() {
   useEffect(() => {
     fetchReport();
   }, [reportType, month, year, from, to]);
-
-  // const handleDelete = async (id: string) => {
-  //   if (!confirm("Are you sure you want to delete this attendance?")) return;
-
-  //   try {
-  //     const res = await fetch(`/api/admin/attendance/delete?id=${id}`, {
-  //       method: "DELETE",
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (res.ok) {
-  //       alert(data.message);
-  //       setRecords(records.filter((r) => r._id !== id));
-  //     } else {
-  //       alert(data.message || "Failed to delete attendance");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Failed to delete attendance");
-  //   }
-  // };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -132,9 +111,6 @@ export default function AttendanceReport() {
 
       {/* Summary */}
       <div className="flex gap-4 mb-4 flex-wrap">
-        <div className="p-4 bg-gray-100 rounded shadow text-gray-900 font-semibold">
-          Total Employees: {totalEmployees}
-        </div>
         <div className="p-4 bg-green-100 rounded shadow text-gray-900 font-semibold">
           Present Employees: {presentEmployees}
         </div>
@@ -148,11 +124,11 @@ export default function AttendanceReport() {
           <table className="min-w-full divide-y divide-gray-300 text-gray-900">
             <thead className="bg-blue-600 text-white">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold">Role</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">Date</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold">Department</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">In</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">Out</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">Place</th>
@@ -160,26 +136,42 @@ export default function AttendanceReport() {
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
-              {records.map((r) => (
-                <tr key={r._id} className="hover:bg-gray-100">
-                  <td className="px-6 py-4">{r.employeeId.name}</td>
-                  <td className="px-6 py-4">{r.employeeId.email}</td>
-                  <td className="px-6 py-4">{r.employeeId.role}</td>
-                  <td className="px-6 py-4">{r.status}</td>
-                  <td className="px-6 py-4">{new Date(r.date).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">{r.inTime || "-"}</td>
-                  <td className="px-6 py-4">{r.outTime || "-"}</td>
-                  <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
-                  <td className="px-6 py-4">
-                    {/* <button
-                      onClick={() => handleDelete(r._id)}
-                      className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded"
-                    >
-                      Delete
-                    </button> */}
-                  </td>
-                </tr>
-              ))}
+              {records.map((r) => {
+                const formattedDate = new Date(r.date).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                });
+                const statusClass =
+                  r.status === "present"
+                    ? "text-green-600 font-bold"
+                    : r.status === "absent"
+                    ? "text-red-600 font-bold"
+                    : "text-orange-600 font-bold";
+
+                const statusText =
+                  r.status === "present"
+                    ? "PRESENT"
+                    : r.status === "absent"
+                    ? "ABSENT"
+                    : "WEEKLY OFF";
+
+                return (
+                  <tr key={r._id} className="hover:bg-gray-100">
+                    <td className="px-6 py-4 font-medium">{formattedDate}</td>
+                    <td className="px-6 py-4">{r.employeeId.name}</td>
+                    <td className={`px-6 py-4 ${statusClass}`}>{statusText}</td>
+                    <td className="px-6 py-4">{r.employeeId.email}</td>
+                    <td className="px-6 py-4">{r.employeeId.department}</td>
+                    <td className="px-6 py-4">{r.inTime || "-"}</td>
+                    <td className="px-6 py-4">{r.outTime || "-"}</td>
+                    <td className="px-6 py-4">{Array.isArray(r.place) ? r.place.join(", ") : r.place}</td>
+                    <td className="px-6 py-4">
+                      {/* Optional action buttons */}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -17,6 +17,7 @@ interface Employee {
   workingDaysPerMonth: number;
   department: string;
   status: string;
+  employeeId:string
 }
 
 export default function EmployeeTableClient() {
@@ -30,7 +31,7 @@ export default function EmployeeTableClient() {
   useEffect(() => {
     async function fetchEmployees() {
       try {
-        const res = await fetch("/api/admin/employees");
+        const res = await fetch("/api/hr/employees");
         const data = await res.json();
         setEmployees(data);
       } catch (err) {
@@ -90,10 +91,11 @@ export default function EmployeeTableClient() {
         <table className="min-w-full divide-y divide-gray-300 text-gray-800">
           <thead className="bg-blue-600 text-white">
             <tr>
+              <th className="px-6 py-3 text-left text-sm font-semibold">Emp.ID</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Department</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Role</th>
+              {/* <th className="px-6 py-3 text-left text-sm font-semibold">Role</th> */}
               <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
             </tr>
@@ -101,10 +103,11 @@ export default function EmployeeTableClient() {
           <tbody className="bg-gray-50 divide-y divide-gray-200 text-gray-800">
             {employees.map((emp) => (
               <tr key={emp._id} className="hover:bg-gray-100">
+                 <td className="px-6 py-4">EMP- {emp.employeeId}</td>
                 <td className="px-6 py-4">{emp.name}</td>
                 <td className="px-6 py-4">{emp.email}</td>
                 <td className="px-6 py-4">{emp.department}</td>
-                <td className="px-6 py-4">{emp.role}</td>
+                {/* <td className="px-6 py-4">{emp.role}</td> */}
                 <td className="px-6 py-4">
                   <select
                     className={`px-2 py-1 rounded font-semibold text-white ${
