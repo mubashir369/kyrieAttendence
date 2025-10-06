@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ModalWrapper from "./ModalWrapper";
+import { useSession } from "next-auth/react";
 
 interface Employee {
   _id: string;
@@ -29,7 +30,7 @@ export default function EditEmployeeModal({
   employee,
   onUpdate,
 }: EditEmployeeModalProps) {
-  // 👇 use one form state instead of multiple
+ 
   const [formState, setFormState] = useState<Employee | null>(null);
 
   useEffect(() => {
@@ -53,7 +54,12 @@ export default function EditEmployeeModal({
     onClose();
   };
 
+   const { data: session } = useSession();
+    const ishr = session?.user?.role === "hr";
+
   if (!formState) return null;
+
+  
 
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose}>
@@ -84,7 +90,9 @@ export default function EditEmployeeModal({
             onChange={handleChange}
             placeholder="Department"
           />
-          <select
+          {
+            !ishr&&
+            <select
             name="role"
             className="p-2 border rounded"
             value={formState.role}
@@ -94,7 +102,9 @@ export default function EditEmployeeModal({
             <option value="hr">HR</option>
             <option value="employee">Employee</option>
           </select>
-          {/* 👇 you can easily add salary, working hours, etc. later */}
+          }
+          
+      
           <div className="flex justify-end gap-2">
             <button
               type="button"

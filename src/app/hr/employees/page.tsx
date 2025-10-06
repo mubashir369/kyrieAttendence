@@ -130,12 +130,12 @@ export default function EmployeeTableClient() {
                   >
                     Reset Password
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => setDeleteEmployee(emp)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
