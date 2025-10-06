@@ -17,6 +17,7 @@ interface Employee {
   workingDaysPerMonth: number;
   department: string;
   status: string;
+  employeeId:string
 }
 
 export default function EmployeeTableClient() {

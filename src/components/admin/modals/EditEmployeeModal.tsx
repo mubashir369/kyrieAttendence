@@ -15,6 +15,7 @@ interface Employee {
   workingHoursPerDay: number;
   workingDaysPerMonth: number;
   status: string;
+  employeeId:string
 }
 
 interface EditEmployeeModalProps {
