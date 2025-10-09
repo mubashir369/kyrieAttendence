@@ -34,9 +34,11 @@ export default function AttendanceReport() {
     setLoading(true);
     try {
       let url = `/api/admin/attendance/reports?type=${reportType}`;
+      const todayISO = new Date().toISOString().split('T')[0];
 
       if (reportType === "monthly") url += `&month=${month}&year=${year}`;
       if (reportType === "period") url += `&from=${from}&to=${to}`;
+      if (reportType === "today") url += `&day=${todayISO}` 
 
       const res = await fetch(url);
       const data = await res.json();
