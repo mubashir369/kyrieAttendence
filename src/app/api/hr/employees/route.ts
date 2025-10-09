@@ -7,8 +7,8 @@ export async function GET(req: NextRequest) {
   try {
     await connectDB();
 
-    // Find all users except admins
-    const employees = await User.find({ role: { $ne: "admin" } }).lean();
+    
+    const employees = await User.find().lean();
 
     return NextResponse.json(employees);
   } catch (err) {

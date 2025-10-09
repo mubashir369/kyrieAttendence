@@ -40,7 +40,7 @@ export default function EmployeeTable({ title, employees, color }: Props) {
                   key={i}
                   className="border-t hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-4 py-2 text-gray-800">{emp.name}</td>
+                  <td className="px-4 py-2 text-gray-800 uppercase">{emp.name}</td>
                   <td className="px-4 py-2 text-gray-800">{emp.email}</td>
                   <td className="px-4 py-2 text-gray-800">{emp.department}</td>
                 </tr>

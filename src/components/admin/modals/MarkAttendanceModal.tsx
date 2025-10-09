@@ -111,7 +111,9 @@ export default function MarkAttendanceModal({ onClose }: Props) {
         }),
       });
       alert("Attendance marked successfully");
+
       onClose();
+      window.location.reload();
     } catch (err) {
       console.error(err);
       alert("Failed to mark attendance");

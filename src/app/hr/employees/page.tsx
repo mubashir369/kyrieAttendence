@@ -104,7 +104,7 @@ export default function EmployeeTableClient() {
             {employees.map((emp) => (
               <tr key={emp._id} className="hover:bg-gray-100">
                  <td className="px-6 py-4">EMP- {emp.employeeId}</td>
-                <td className="px-6 py-4">{emp.name}</td>
+                <td className="px-6 py-4 uppercase">{emp.name}</td>
                 <td className="px-6 py-4">{emp.email}</td>
                 <td className="px-6 py-4">{emp.department}</td>
                 {/* <td className="px-6 py-4">{emp.role}</td> */}
@@ -115,6 +115,7 @@ export default function EmployeeTableClient() {
                     }`}
                     value={emp.status}
                     onChange={(e) => handleStatusChange(emp._id, e.target.value)}
+                    disabled={emp.role=="admin"}
                   >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -123,11 +124,13 @@ export default function EmployeeTableClient() {
                 <td className="px-6 py-4 flex space-x-2">
                   <button
                     onClick={() => setEditEmployee(emp)}
+                    disabled={emp.role=="admin"}
                     className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
                   >
                     Edit
                   </button>
                   <button
+                   disabled={emp.role=="admin"}
                     onClick={() => setResetEmployee(emp)}
                     className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded"
                   >

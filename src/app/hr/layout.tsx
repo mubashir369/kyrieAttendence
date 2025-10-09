@@ -1,5 +1,6 @@
 
 import CompanyHeader from "@/components/CompanyHeader";
+import Footer from "@/components/Footer";
 import HrNavbar from "@/components/hr/HrNavbar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -19,7 +20,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Page content */}
         <main className="p-6 bg-gray-100 flex-1 overflow-auto">{children}</main>
+       
       </div>
+       <Footer/>
     </div>
   );
 }

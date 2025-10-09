@@ -4,9 +4,12 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 
 export async function getDashboardData(dateStr?: string) {
+ 
+  
   await connectDB();
 const todayStart = dateStr ? new Date(dateStr) : new Date();
-//   const todayStart = new Date();
+ console.log(todayStart,"backssssssssssssssssssssssssssssfro",dateStr);
+
   todayStart.setHours(0, 0, 0, 0);
   const todayEnd = new Date();
   todayEnd.setHours(23, 59, 59, 999);

@@ -163,7 +163,7 @@ export default function AttendanceReport() {
                 return (
                   <tr key={r._id} className="hover:bg-gray-100">
                     <td className="px-6 py-4 font-medium">{formattedDate}</td>
-                    <td className="px-6 py-4">{r.employeeId.name}</td>
+                    <td className="px-6 py-4 uppercase">{r.employeeId.name}</td>
                     <td className={`px-6 py-4 ${statusClass}`}>{statusText}</td>
                     <td className="px-6 py-4">{r.employeeId.email}</td>
                     <td className="px-6 py-4">{r.employeeId.department}</td>
