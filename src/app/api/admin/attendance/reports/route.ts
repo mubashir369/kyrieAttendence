@@ -10,20 +10,33 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get("type");
 
  const filter: Record<string, unknown> = {}; 
- 
+
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   switch (type) {
   case "today":
-  const start = new Date();
-  start.setHours(0, 0, 0, 0); 
-  const end = new Date();
-  end.setHours(23, 59, 59, 999); 
 
-  filter.date = { $gte: start, $lte: end };
-  break;
+      const specificDateStr = searchParams.get("day"); 
+      let dayToReport: Date;
+
+      if (specificDateStr) {
+
+        dayToReport = new Date(specificDateStr);
+      } else {
+    
+        dayToReport = new Date();
+      }
+
+    
+      const start = new Date(dayToReport);
+      start.setHours(0, 0, 0, 0); 
+      const end = new Date(dayToReport);
+      end.setHours(23, 59, 59, 999); 
+
+      filter.date = { $gte: start, $lte: end };
+      break;
 
     case "monthly":
       const month = parseInt(searchParams.get("month") || `${today.getMonth() + 1}`);
