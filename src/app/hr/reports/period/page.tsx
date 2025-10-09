@@ -62,15 +62,17 @@ export default function AttendanceReport() {
 
       {/* Filters */}
       <div className="flex gap-4 mb-4 items-center flex-wrap">
-        <select
-          value={reportType}
-          onChange={(e) => setReportType(e.target.value as any)}
-          className="border p-2 rounded text-gray-800"
-        >
-          <option value="today">Today</option>
-          <option value="monthly">Monthly</option>
-          <option value="period">Period</option>
-        </select>
+      <select
+  value={reportType}
+  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+    setReportType(e.target.value as "today" | "monthly" | "period")
+  }
+  className="border p-2 rounded text-gray-800"
+>
+  <option value="today">Today</option>
+  <option value="monthly">Monthly</option>
+  <option value="period">Period</option>
+</select>
 
         {reportType === "monthly" && (
           <>
@@ -109,14 +111,14 @@ export default function AttendanceReport() {
         )}
       </div>
 
-      {/* Summary */}
+ 
       <div className="flex gap-4 mb-4 flex-wrap">
         <div className="p-4 bg-green-100 rounded shadow text-gray-900 font-semibold">
           Present Employees: {presentEmployees}
         </div>
       </div>
 
-      {/* Table */}
+     
       {loading ? (
         <p className="text-gray-900">Loading...</p>
       ) : (

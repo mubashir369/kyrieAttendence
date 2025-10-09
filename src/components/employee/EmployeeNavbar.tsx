@@ -44,9 +44,13 @@ export default function EmployeeNavbar() {
       setIsModalOpen(false);
       setNewPassword("");
       setConfirmPassword("");
-    } catch (err: any) {
-      alert(err.message || "Something went wrong");
-    } finally {
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    alert(err.message);
+  } else {
+    alert("Something went wrong");
+  }
+} finally {
       setLoading(false);
     }
   };

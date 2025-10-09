@@ -1,7 +1,17 @@
-// /api/admin/attendance/reports/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Attendance from "@/models/Attendance";
 import { connectDB } from "@/lib/db";
+
+
+interface DateFilter {
+  $gte?: Date;
+  $lte?: Date;
+}
+
+interface AttendanceFilter {
+  date?: DateFilter;
+
+}
 
 export async function GET(req: NextRequest) {
   await connectDB();
@@ -9,24 +19,28 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type");
 
-  let filter: any = {};
+  const filter: AttendanceFilter = {}; 
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   switch (type) {
-  case "today":
-  const start = new Date();
-  start.setHours(0, 0, 0, 0); 
-  const end = new Date();
-  end.setHours(23, 59, 59, 999); 
+    case "today":
+      const start = new Date();
+      start.setHours(0, 0, 0, 0); 
+      const end = new Date();
+      end.setHours(23, 59, 59, 999); 
 
-  filter.date = { $gte: start, $lte: end };
-  break;
+      filter.date = { $gte: start, $lte: end };
+      break;
 
     case "monthly":
-      const month = parseInt(searchParams.get("month") || `${today.getMonth() + 1}`);
-      const year = parseInt(searchParams.get("year") || `${today.getFullYear()}`);
+      const monthParam = searchParams.get("month") || `${today.getMonth() + 1}`;
+      const yearParam = searchParams.get("year") || `${today.getFullYear()}`;
+      
+      const month = parseInt(monthParam);
+      const year = parseInt(yearParam);
+      
       const firstDay = new Date(year, month - 1, 1);
       const lastDay = new Date(year, month, 0, 23, 59, 59);
       filter.date = { $gte: firstDay, $lte: lastDay };
@@ -50,6 +64,8 @@ export async function GET(req: NextRequest) {
       .sort({ date: -1 });
 
     const totalEmployees = await Attendance.distinct("employeeId"); 
+    
+
     const presentEmployees = records.filter(r => r.status === "present").length;
 
     return NextResponse.json({

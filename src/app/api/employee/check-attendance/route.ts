@@ -26,8 +26,12 @@ export async function GET(req: NextRequest) {
     } else {
       return NextResponse.json({ status: false });
     }
-  } catch (err: any) {
+  } catch (err) { // Type is implicitly 'unknown', fixing the error on line 29
     console.error(err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    
+    // Safely access the error message using a type guard
+    const errorMessage = err instanceof Error ? err.message : "An unexpected server error occurred.";
+    
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

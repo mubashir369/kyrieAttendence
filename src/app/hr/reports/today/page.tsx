@@ -37,7 +37,7 @@ export default function TodayReportPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Today's Report</h1>
+     <h1 className="text-3xl font-bold mb-6">Today&apos;s Report</h1>
 
       {/* Summary */}
       <div className="flex space-x-4 mb-6">

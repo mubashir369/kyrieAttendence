@@ -9,7 +9,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type");
 
-  let filter: any = {};
+ const filter: Record<string, unknown> = {}; 
+ 
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
