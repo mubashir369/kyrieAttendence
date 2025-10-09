@@ -11,8 +11,14 @@ interface CachedMongoose {
   promise: Promise<typeof mongoose> | null;
 }
 
-let cached: CachedMongoose = (global as any).mongoose || { conn: null, promise: null };
-(global as any).mongoose = cached;
+// Extend global namespace to type 'mongoose' cache
+declare global {
+  var mongoose: CachedMongoose | undefined;
+}
+
+// Use 'const' because the reference doesn't change
+const cached: CachedMongoose = global.mongoose || { conn: null, promise: null };
+global.mongoose = cached;
 
 export async function connectDB() {
   if (cached.conn) {

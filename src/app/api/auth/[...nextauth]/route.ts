@@ -1,8 +1,16 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { AuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+
+// Define a union type for roles
+export type Role = "admin" | "hr" | "employee";
+
+// Extend the NextAuth User type to include 'role' for the authorize function's return
+interface AuthorizedUser extends NextAuthUser {
+  role: Role;
+}
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -12,15 +20,30 @@ export const authOptions: AuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any) {
+      // Change 'credentials: any' to a specific type or remove the explicit ': any'
+      async authorize(credentials) { // Line 15: Removed ': any' or use `Record<'email' | 'password', string> | undefined`
+        
+        // This is safe to leave without an explicit type if you trust the `credentials` structure
+        // from the `credentials` definition above.
+
         await connectDB();
-        const user = await User.findOne({ email: credentials.email });
+        
+        // Assuming your Mongoose User model returns an object with `_id`, `name`, `email`, and `password`
+        // We'll trust the User model type for now.
+        const user = await User.findOne({ email: credentials?.email }); 
+        
         if (!user) throw new Error("No user found");
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        const isValid = await bcrypt.compare(credentials!.password, user.password);
         if (!isValid) throw new Error("Invalid password");
 
-        return { id: user._id.toString(), name: user.name, email: user.email, role: user.role };
+        // The returned object must match the structure defined in `AuthorizedUser`
+        return { 
+          id: user._id.toString(), 
+          name: user.name, 
+          email: user.email, 
+          role: user.role as Role // Ensure `user.role` is cast to the `Role` union type
+        } as AuthorizedUser; // Cast to the extended User type
       },
     }),
   ],
@@ -36,26 +59,24 @@ export const authOptions: AuthOptions = {
   },
 
   callbacks: {
-  async jwt({ token, user }) {
-    if (user) {
-  
-      token.role = (user as any).role as "admin" | "hr" | "employee";
+    async jwt({ token, user }) {
+      if (user) {
+        // Line 42: Use the `AuthorizedUser` interface or explicitly type the assertion
+        token.role = (user as AuthorizedUser).role; // Removed `(user as any)`
+        token.id = user.id;
+      }
+      return token;
+    },
 
-      token.id=user.id
-    }
-    return token;
+    async session({ session, token }) {
+      if (token?.role) {
+        // This assertion is fine as `token.role` was set by `jwt` callback
+        session.user.role = token.role as Role; 
+        session.id = token.id as string;
+      }
+      return session;
+    },
   },
-
-  async session({ session, token }) {
-    if (token?.role) {
-   
-      session.user.role = token.role as "admin" | "hr" | "employee";
-     
-      session.id = token.id as string;
-    }
-    return session;
-  },
-},
 };
 
 const handler = NextAuth(authOptions);

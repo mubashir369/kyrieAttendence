@@ -5,10 +5,10 @@ import dayjs from "dayjs";
 
 export async function GET(
   req: Request,
-  { params }: { params: { employeeId: string; month: string } }
+  context: { params: Promise<{ employeeId: string; month: string }> }
 ) {
   await connectDB();
-  const { employeeId, month } = params; // e.g. month = "2025-10"
+  const { employeeId, month } = await context.params; // Await the params promise
 
   try {
     const startOfMonth = dayjs(`${month}-01`);

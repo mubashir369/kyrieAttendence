@@ -85,7 +85,9 @@ export default function AttendanceReport() {
       <div className="flex gap-4 mb-4 items-center flex-wrap">
         <select
           value={reportType}
-          onChange={(e) => setReportType(e.target.value as any)}
+         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+  setReportType(e.target.value as "today" | "monthly" | "period")
+}
           className="border p-2 rounded text-gray-800"
         >
           <option value="today">Today</option>

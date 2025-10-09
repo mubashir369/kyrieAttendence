@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Check if user already exists
+   
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json({ error: "User already exists" }, { status: 400 });
@@ -39,7 +39,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
+  } catch (error: unknown) {
+  let message = "Server error";
+  if (error instanceof Error) {
+    message = error.message;
   }
+  return NextResponse.json({ error: message }, { status: 500 });
+}
 }

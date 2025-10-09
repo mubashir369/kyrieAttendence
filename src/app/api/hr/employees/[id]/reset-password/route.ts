@@ -44,8 +44,14 @@ export async function PATCH(
       message: "Password reset successfully",
       employee,
     });
-  } catch (err: any) {
+  }  catch (err) {
     console.error("Reset password error:", err);
+
+   
+    if (err instanceof Error) {
+      console.error("Error message:", err.message);
+    }
+    
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

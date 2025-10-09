@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
 
+interface Employee {
+  _id: string;
+  name?: string;
+  email?: string;
+}
+
 interface Props {
-  employee: any;
+  employee: Employee;
   onClose: () => void;
 }
 
@@ -22,9 +28,14 @@ export default function ResetPasswordModal({ employee, onClose }: Props) {
       });
       onClose();
       alert("Password reset successfully");
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
-      alert("Failed to reset password");
+
+      if (err instanceof Error) {
+        alert(err.message || "Failed to reset password");
+      } else {
+        alert("Failed to reset password");
+      }
     } finally {
       setLoading(false);
     }
